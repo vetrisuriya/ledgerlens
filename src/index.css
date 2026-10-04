@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 221 83% 45%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 72.2% 40.6%;
+    --destructive-foreground: 210 20% 98%;
+    --success: 142 71% 29%;
+    --success-foreground: 210 20% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 221 83% 45%;
+    --radius: 0.6rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 5.5%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 5.5%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 45%;
+    --destructive-foreground: 210 20% 98%;
+    --success: 142 69% 45%;
+    --success-foreground: 210 20% 98%;
+    --border: 240 3.7% 17%;
+    --input: 240 3.7% 17%;
+    --ring: 224 76% 48%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+}
+
+@layer components {
+  /* Row height is fixed because the data table virtualises on it. */
+  .grid-row-height {
+    height: 2.125rem;
+  }
+
+  .ocr-text {
+    font-family: theme('fontFamily.mono');
+    font-size: 0.75rem;
+    line-height: 1.35rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}

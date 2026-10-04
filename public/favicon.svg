@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="LedgerLens">
+  <defs>
+    <linearGradient id="ll-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3b82f6" />
+      <stop offset="1" stop-color="#1e3a8a" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#ll-bg)" />
+  <rect x="29" y="10" width="6" height="19" rx="3" fill="#fff" />
+  <path d="M32 40 22.5 28.5h19Z" fill="#fff" />
+  <rect x="15" y="45" width="34" height="5.5" rx="2.75" fill="#fff" fill-opacity="0.95" />
+  <rect x="15" y="54" width="21" height="5.5" rx="2.75" fill="#fff" fill-opacity="0.7" />
+</svg>
