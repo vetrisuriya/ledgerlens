@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { seoPages } from './plugins/seo-pages';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), seoPages()],
   base: './',
   build: {
     target: 'es2020',

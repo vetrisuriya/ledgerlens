@@ -1,12 +1,57 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Extract Google Pay, PhonePe and other payment transaction details from screenshots into an exportable table. Runs entirely in your browser." />
-    <meta name="theme-color" content="#ffffff" />
 
     <title>LedgerLens — Payment screenshots to ledger tables</title>
+    <meta
+      name="description"
+      content="Convert Google Pay, PhonePe and other UPI payment screenshots into an Excel or CSV table. Extracts amount, sender, UTR, date and notes, then exports XLSX, CSV or PDF."
+    />
+    <meta
+      name="keywords"
+      content="google pay screenshot to excel, phonepe screenshot to csv, upi screenshot to excel, payment screenshot to spreadsheet, screenshot to excel tool, convert upi screenshots to csv, bulk screenshots to table, payment receipt to ledger"
+    />
+    <meta name="author" content="Vetri Suriya" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="application-name" content="LedgerLens" />
+    <meta name="generator" content="Vite" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)" />
+
+    <link rel="canonical" href="https://ledgerlens.vercel.app/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LedgerLens" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:url" content="https://ledgerlens.vercel.app/" />
+    <meta property="og:title" content="LedgerLens — Convert payment screenshots to Excel, CSV or PDF" />
+    <meta
+      property="og:description"
+      content="Drop a folder of Google Pay or PhonePe screenshots and get a spreadsheet of amounts, senders, UTR numbers and dates. Runs entirely in your browser — screenshots are never uploaded."
+    />
+    <meta property="og:image" content="https://ledgerlens.vercel.app/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="LedgerLens turning Google Pay and PhonePe payment screenshots into a spreadsheet table"
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LedgerLens — Convert payment screenshots to Excel, CSV or PDF" />
+    <meta
+      name="twitter:description"
+      content="Drop a folder of Google Pay or PhonePe screenshots and get a spreadsheet of amounts, senders, UTR numbers and dates. Runs entirely in your browser."
+    />
+    <meta name="twitter:image" content="https://ledgerlens.vercel.app/og-image.png" />
+    <meta
+      name="twitter:image:alt"
+      content="LedgerLens turning Google Pay and PhonePe payment screenshots into a spreadsheet table"
+    />
 
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png" />
@@ -20,6 +65,71 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://ledgerlens.vercel.app/#website",
+            "url": "https://ledgerlens.vercel.app/",
+            "name": "LedgerLens",
+            "description": "Free browser tool that turns Google Pay, PhonePe and other UPI payment screenshots into an exportable Excel, CSV or PDF table.",
+            "inLanguage": "en-IN",
+            "publisher": { "@id": "https://ledgerlens.vercel.app/#publisher" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://ledgerlens.vercel.app/#publisher",
+            "name": "LedgerLens",
+            "url": "https://ledgerlens.vercel.app/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://ledgerlens.vercel.app/favicon-512.png",
+              "width": 512,
+              "height": 512
+            }
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://ledgerlens.vercel.app/#app",
+            "name": "LedgerLens",
+            "url": "https://ledgerlens.vercel.app/",
+            "urlTemplate": "https://ledgerlens.vercel.app/",
+            "applicationCategory": "BusinessApplication",
+            "applicationSubCategory": "Accounting",
+            "operatingSystem": "Any modern browser on Windows, macOS, Linux, Android or iOS",
+            "browserRequirements": "Requires JavaScript and WebAssembly",
+            "description": "LedgerLens reads transaction details out of payment app screenshots with on-device OCR and turns a batch of them into a spreadsheet. Amounts, payer names, banks, UPI IDs, UTR numbers, dates and notes are detected per screenshot, then exported to XLSX, CSV, TSV, PDF, Markdown, HTML or JSON. No backend, no uploads, no image storage.",
+            "image": "https://ledgerlens.vercel.app/og-image.png",
+            "screenshot": "https://ledgerlens.vercel.app/og-image.png",
+            "inLanguage": "en-IN",
+            "isAccessibleForFree": true,
+            "featureList": [
+              "Google Pay, PhonePe, Paytm and BHIM UPI receipt screenshots",
+              "On-device OCR, screenshots never leave the browser",
+              "Bulk processing with a live progress queue",
+              "Export to XLSX, CSV, TSV, PDF, Markdown, HTML and JSON",
+              "Amounts stored as numbers so spreadsheets can sum them",
+              "No login, no signup, no upload limit"
+            ],
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "INR",
+              "availability": "https://schema.org/InStock"
+            },
+            "creator": { "@id": "https://ledgerlens.vercel.app/#publisher" },
+            "author": {
+              "@type": "Person",
+              "name": "Vetri Suriya",
+              "url": "https://vetrisuriya.in"
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

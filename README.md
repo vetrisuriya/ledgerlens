@@ -36,6 +36,7 @@ OCR actually read.
 | Spreadsheet | ExcelJS |
 | PDF | jsPDF + jspdf-autotable |
 | Tests | Vitest, plus Playwright for the browser-level checks |
+| SEO | Generated content pages, prerendered app HTML, JSON-LD, sitemap |
 
 ## Running locally
 
@@ -47,9 +48,11 @@ npm run dev
 Other scripts:
 
 ```bash
-npm run build      # typecheck + production bundle into dist/
+npm run build      # typecheck + production bundle into dist/ + prerender
 npm run typecheck  # tsc --noEmit
 npm test           # parser unit tests
+npm run og-image   # redraw public/og-image.png, the social share card
+npm run icons      # redraw the favicons
 ```
 
 ## Verifying a change
@@ -77,13 +80,51 @@ its own order; and the amount extractor is checked against the figure OCR produc
 twice, since the rupee sign changes shape between a whole-page read and a read of
 the total on its own.
 
+## SEO
+
+The app is a single-page React bundle, which is the worst case for a crawler: it
+would otherwise ship an empty `<div id="root">`. So search visibility is built
+from five parts, all generated rather than hand-maintained per page.
+
+| Part | Where | Notes |
+| --- | --- | --- |
+| Site metadata | `src/config.ts` | Canonical origin, OG image, author, and the ordered nav list that feeds the header, the footer and the sitemap. |
+| App-page meta and JSON-LD | `index.html` | Canonical, Open Graph, Twitter cards, and `WebSite` + `WebApplication` schema. |
+| Content pages | `seo/content.ts` | One entry per keyword route: title, description, copy blocks, FAQ. |
+| Page rendering | `seo/render.ts` | Emits the HTML, `WebPage`/`BreadcrumbList`/`FAQPage` JSON-LD, `sitemap.xml`, `robots.txt`, the manifest and `seo.css`. |
+| Build wiring | `plugins/seo-pages.ts`, `scripts/prerender.mjs` | Emits the above as build assets, serves them in dev, and writes the app's first render into `dist/index.html`. |
+
+**Adding a page** means adding one object to `PAGES` in `seo/content.ts` and one
+link to `SITE.nav` in `src/config.ts`. Everything else — nav, footer, sitemap,
+breadcrumb, structured data — follows. The page is then served in dev and built
+into `dist/<slug>/index.html`, which `vercel.json`'s `cleanUrls` exposes at
+`/<slug>`.
+
+**Prerendering** (`scripts/prerender.mjs`) is why the landing page has content in
+the served HTML. It runs Chromium once against the built `dist/`, copies the
+rendered `#root` into `index.html`, and React mounts over it exactly as before.
+If Chromium is not installed the step warns and skips; the app still works, it
+just has less for a crawler to read.
+
+**Two hosts, one canonical URL.** The links, canonicals and sitemap are all
+root-absolute for `https://ledgerlens.vercel.app`. That means a GitHub Pages
+deploy, which lives under a `/<repo>/` subpath, will serve pages whose internal
+links point at the Vercel origin. Pick one host, or serve Pages from a custom
+domain on the root.
+
+**Analytics** — there are none, deliberately, and `/privacy` says so. The
+privacy claim in the header badge is load-bearing for this tool, so a tracking
+script would contradict the page it is on.
+
 ## Deploying
 
-**Vercel** — import the repo, accept the defaults, deploy. No configuration needed.
+**Vercel** — import the repo, accept the defaults, deploy. `vercel.json` handles
+clean URLs, long-lived caching for hashed assets and the usual security headers.
 
 **GitHub Pages** — push to `main` and the workflow in
 `.github/workflows/deploy.yml` publishes `dist/`. Set
-*Settings → Pages → Source* to **GitHub Actions** once.
+*Settings → Pages → Source* to **GitHub Actions** once. See the note above
+about root-absolute links.
 
 ## Adding a new field or app
 

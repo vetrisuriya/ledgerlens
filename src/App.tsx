@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ShieldCheck } from 'lucide-react';
+import { Footer } from './components/Footer';
+import { GuideLinks } from './components/GuideLinks';
 import { Logo } from './components/Logo';
 import { Badge } from './components/ui/badge';
 import { Button } from './components/ui/button';
@@ -45,7 +47,7 @@ export default function App() {
         <div className="flex items-center gap-2.5">
           <Logo />
           <div className="leading-tight">
-            <h1 className="text-sm font-semibold tracking-tight">{APP.name}</h1>
+            <div className="text-sm font-semibold tracking-tight">{APP.name}</div>
             <p className="hidden text-[11px] text-muted-foreground sm:block">{APP.tagline}</p>
           </div>
         </div>
@@ -78,10 +80,9 @@ export default function App() {
         <ReferencePage onContinue={start} />
       )}
 
-      <footer className="px-5 pb-5 pt-2 text-center text-xs text-muted-foreground">
-        Screenshots are decoded, read and discarded in this tab. Nothing is uploaded, written to
-        disk, or sent to a server.
-      </footer>
+      {view === 'reference' && <GuideLinks />}
+
+      <Footer />
     </div>
   );
 }
