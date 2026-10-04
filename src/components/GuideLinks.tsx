@@ -1,3 +1,5 @@
+import { relativeHref } from '../config';
+
 const GUIDES = [
   {
     href: '/google-pay-screenshot-to-excel',
@@ -39,7 +41,7 @@ export function GuideLinks() {
             <li key={guide.href}>
               <a
                 className="block h-full rounded-md border p-3 transition-colors hover:border-primary/40 hover:bg-muted/40"
-                href={guide.href}
+                href={`${relativeHref(guide.href)}/`}
               >
                 <span className="block text-xs font-medium leading-snug">{guide.title}</span>
                 <span className="mt-1 block text-[11px] leading-relaxed text-muted-foreground">

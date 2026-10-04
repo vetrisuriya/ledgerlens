@@ -24,7 +24,7 @@ export const APP = {
  */
 export const SITE = {
   /** Canonical origin. Change this and the sitemap, canonicals and OG URLs follow. */
-  url: 'https://ledgerlens.vercel.app',
+  url: 'https://vetrisuriya.github.io/ledgerlens',
   locale: 'en_IN',
   lang: 'en-IN',
   themeColorLight: '#ffffff',
@@ -54,7 +54,21 @@ export const SITE = {
   headerNavCount: 6,
 } as const;
 
-/** Absolute URL for a root-relative path, used for canonicals and social tags. */
+/**
+ * Absolute URL for a site path, used for canonicals, social tags and the sitemap.
+ * The leading slash is dropped before resolving, otherwise a leading-slash path
+ * would discard a base path and point at the domain root instead of
+ * `/ledgerlens/...`.
+ */
 export function absoluteUrl(path: string): string {
-  return new URL(path, `${SITE.url}/`).href;
+  return new URL(path.replace(/^\//, ''), `${SITE.url}/`).href;
+}
+
+/**
+ * Link href relative to the current document, so one build works both at a domain
+ * root and under a `/repo/` subpath like GitHub Pages. On `/` this resolves to
+ * `/how-it-works`; on `/repo/` it resolves to `/repo/how-it-works`.
+ */
+export function relativeHref(path: string): string {
+  return path.replace(/^\//, '');
 }

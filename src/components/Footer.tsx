@@ -1,5 +1,5 @@
 import { Heart } from 'lucide-react';
-import { SITE } from '../config';
+import { SITE, relativeHref } from '../config';
 
 export function Footer() {
   return (
@@ -11,7 +11,7 @@ export function Footer() {
               <li key={item.href}>
                 <a
                   className="text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
-                  href={item.href}
+                  href={`${relativeHref(item.href)}/`}
                 >
                   {item.label}
                 </a>

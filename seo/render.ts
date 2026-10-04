@@ -1,9 +1,29 @@
 import { APP, SITE, absoluteUrl } from '../src/config';
 import { PAGES, PAGES_BY_SLUG, type Block, type Page } from './content';
 
-const FAVICON = '/favicon.svg';
-const STYLES = '/seo.css';
+/**
+ * Content pages are emitted to `<deployBase>/<slug>/index.html`, so every internal
+ * href is written relative to that document. That is what lets one build work at a
+ * domain root and under a `/ledgerlens/` subpath like GitHub Pages: `../faq/`
+ * resolves correctly in both. Absolute URLs are still used where a crawler needs
+ * one — canonicals, Open Graph, the sitemap.
+ */
+const UP = '../';
+const FAVICON = `${UP}favicon.svg`;
+const APPLE_ICON = `${UP}apple-touch-icon.png`;
+const MANIFEST = `${UP}manifest.webmanifest`;
+const STYLES = `${UP}seo.css`;
+const HOME = UP;
 const OG_IMAGE = absoluteUrl(SITE.ogImage.path);
+
+/** Canonical URL for a route, trailing-slashed the way static hosts serve it. */
+function pageUrl(slug: string): string {
+  return `${absoluteUrl(slug)}/`;
+}
+
+function pageHref(slug: string): string {
+  return `${UP}${slug.replace(/^\//, '')}/`;
+}
 
 export function escapeHtml(value: string): string {
   return value
@@ -57,7 +77,7 @@ function breadcrumbSchema(page: Page): Record<string, unknown> {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'LedgerLens', item: absoluteUrl('/') },
-      { '@type': 'ListItem', position: 2, name: labelFor(page.slug), item: absoluteUrl(page.slug) },
+      { '@type': 'ListItem', position: 2, name: labelFor(page.slug), item: pageUrl(page.slug) },
     ],
   };
 }
@@ -75,7 +95,7 @@ function faqSchema(page: Page): Record<string, unknown> | null {
 }
 
 function pageSchema(page: Page): unknown {
-  const url = absoluteUrl(page.slug);
+  const url = pageUrl(page.slug);
 
   const graph: Record<string, unknown>[] = [
     {
@@ -107,7 +127,7 @@ function navLinks(limit: number): string {
   const items = SITE.nav.slice(0, limit);
 
   return `<nav aria-label="Site"><ul>${items
-    .map((item) => `<li><a href="${item.href}">${escapeHtml(item.label)}</a></li>`)
+    .map((item) => `<li><a href="${pageHref(item.href)}">${escapeHtml(item.label)}</a></li>`)
     .join('')}</ul></nav>`;
 }
 
@@ -116,7 +136,7 @@ function labelFor(slug: string): string {
 }
 
 function renderPage(page: Page): string {
-  const url = absoluteUrl(page.slug);
+  const url = pageUrl(page.slug);
   const related = (page.related ?? [])
     .map((slug) => PAGES_BY_SLUG.get(slug))
     .filter((item): item is Page => Boolean(item));
@@ -156,8 +176,8 @@ ${
     <meta name="twitter:image" content="${OG_IMAGE}" />
 
     <link rel="icon" type="image/svg+xml" href="${FAVICON}" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="${APPLE_ICON}" />
+    <link rel="manifest" href="${MANIFEST}" />
     <link rel="stylesheet" href="${STYLES}" />
 
     <script type="application/ld+json">${jsonLd(pageSchema(page))}</script>
@@ -165,7 +185,7 @@ ${
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="/">
+      <a class="brand" href="${HOME}">
         <img src="${FAVICON}" width="28" height="28" alt="" />
         <span>${escapeHtml(APP.name)}</span>
       </a>
@@ -201,7 +221,7 @@ ${page.faq
           Drop one receipt to set the columns, then add the rest. Everything runs in your browser,
           so nothing is uploaded.
         </p>
-        <a class="button" href="/">Open LedgerLens</a>
+        <a class="button" href="${HOME}">Open LedgerLens</a>
       </aside>
 
 ${
@@ -212,7 +232,7 @@ ${
 ${related
   .map(
     (item) =>
-      `          <li><a href="${escapeHtml(item.slug)}">${escapeHtml(
+      `          <li><a href="${pageHref(item.slug)}">${escapeHtml(
         labelFor(item.slug),
       )}</a><span>${escapeHtml(item.description)}</span></li>`,
   )
@@ -229,7 +249,7 @@ ${related
       </p>
       <p>
 ${SITE.nav.map((item, index) => {
-  const link = `<a href="${item.href}">${escapeHtml(item.label)}</a>`;
+  const link = `<a href="${pageHref(item.href)}">${escapeHtml(item.label)}</a>`;
   return index === 0 ? `        ${link}` : ` ·\n        ${link}`;
 }).join('')}
       </p>
@@ -249,7 +269,7 @@ export function renderSitemap(): string {
   const urls = [
     { loc: absoluteUrl('/'), priority: '1.0', changefreq: 'monthly' },
     ...PAGES.map((page) => ({
-      loc: absoluteUrl(page.slug),
+      loc: pageUrl(page.slug),
       priority: page.priority.toFixed(1),
       changefreq: 'monthly',
     })),
@@ -282,23 +302,23 @@ export function renderManifest(): string {
       name: `${APP.name} — ${APP.tagline}`,
       short_name: APP.name,
       description: APP.shortDescription,
-      id: '/',
-      start_url: '/',
-      scope: '/',
+      id: './',
+      start_url: './',
+      scope: './',
       display: 'standalone',
       orientation: 'portrait-primary',
       background_color: SITE.themeColorLight,
       theme_color: '#2563eb',
       categories: ['business', 'productivity', 'utilities'],
       icons: [
-        { src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
-        { src: '/favicon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
-        { src: '/favicon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
-        { src: '/favicon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        { src: './favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
+        { src: './favicon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: './favicon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: './favicon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
       ],
       shortcuts: [
-        { name: 'How it works', url: '/how-it-works' },
-        { name: 'FAQ', url: '/faq' },
+        { name: 'How it works', url: 'how-it-works/' },
+        { name: 'FAQ', url: 'faq/' },
       ],
     },
     null,
